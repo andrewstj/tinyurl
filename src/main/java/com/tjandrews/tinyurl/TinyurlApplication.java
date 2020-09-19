@@ -1,4 +1,4 @@
-package com.tjandrews.tinyurl.tinyurl;
+package com.tjandrews.tinyurl;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
