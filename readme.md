@@ -17,9 +17,7 @@ The approach I used was:
 - Utilize Spring Boot to be able to quickly bootstrap a Java application
 - Use H2 in memory database to get a quick Relational DB as persistent store
 - Use JPA / Hibernate so when switching to production database we don't have to switch code
-- For the algorithm, create a Bijective Function to convert ID's to Strings with alpha numeric characters
-
-The URL it redirects to is currently hardcoded to path `/r/{encodedPath}` (r is short for redirect), because using base path would then override ability to have other endpoints, such as `POST /urlMapping`
+- For the [URLEncoder](src/main/java/com/tjandrews/tinyurl/business/UrlEncoder.java), allow for encoding / decoding Integer to String
 
 The main code prinicples followed here are:
 - Layered architecture (gui, presentation, business, infrastructure)
@@ -27,7 +25,14 @@ The main code prinicples followed here are:
 - Single Responsibilty (Don't have functions or classes doing more than they should)
 - Dependency Inversion (Injecting implementation at runtime helps testability)
 
-# Running
+### Caveats
+- The URL it redirects to is currently hardcoded to path `/r/{encodedPath}` (r is short for redirect), because using base path would then override ability to have other endpoints, such as `POST /urlMapping`
+- Used Integer instead of Long for the ID as it can hold up to ~2.15 billion urls, if we need more:
+  - We could create more tables that each belong to a base path (`/a/`, `/b/`, etc)
+  - We could utilize a compound key on the table where it's the Id and the base path (`a1`, `b1`, etc)
+  - We could use a Long, but this will result in longer encoded path that maps to such a large number, as well as a longer lookup time in the single table for that many URLs and we still need to index
+
+# Run
 Pre-req: Must have Java 8 installed and JAVA_HOME set
 
 `./gradlew bootRun`
