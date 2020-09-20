@@ -40,12 +40,13 @@ public class JpaUrlMappingDao implements UrlMappingDao {
   @Override
   public Optional<UrlMapping> getByEncodedValue(String encodedValue) {
     try {
-      TypedQuery<UrlMapping> getByEncodedValue = entityManager.createQuery("from UrlMapping WHERE encodedValue = :encodedValue", UrlMapping.class); 
+      TypedQuery<UrlMapping> getByEncodedValue = entityManager
+          .createQuery("from UrlMapping WHERE encodedValue = :encodedValue", UrlMapping.class);
       UrlMapping mapping = getByEncodedValue.setParameter("encodedValue", encodedValue).getSingleResult();
       return Optional.of(mapping);
     } catch (NoResultException exception) {
       return Optional.empty();
     }
   }
-  
+
 }

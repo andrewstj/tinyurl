@@ -30,8 +30,6 @@ The main code prinicples followed here are:
 # Running
 Pre-req: Must have Java 8 installed and JAVA_HOME set
 
-At the top level directory
-
 `./gradlew bootRun`
 or
 `./gradlew.bat bootRun`
@@ -43,8 +41,14 @@ http://localhost:8080/swagger-ui.html#/
 ![Swagger](screenshots/swagger.png)
 
 To view the database go here:
+
 http://localhost:8080/console
 
 And put in parameters like this (password is sa):
 ![Database](screenshots/dbConsole.png)
 
+# Test
+
+`./gradlew test`
+or
+`./gradlew.bat test`
