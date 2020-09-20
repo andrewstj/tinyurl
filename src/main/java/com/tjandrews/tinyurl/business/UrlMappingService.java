@@ -19,8 +19,9 @@ public class UrlMappingService {
   public UrlMapping createUrlMapping(UrlMappingRequest mappingRequest) {
     UrlMapping urlMapping = new UrlMapping();
     urlMapping.setUrl(mappingRequest.getUrl());
-    urlMapping.setEncodedValue("encodedValue"); // TODO: create logic here
     urlMappingDao.create(urlMapping);
+    urlMapping.setEncodedValue(UrlEncoder.encodeIdToUrl(urlMapping.getId()));
+    urlMappingDao.update(urlMapping);
     return urlMapping;
   };
 

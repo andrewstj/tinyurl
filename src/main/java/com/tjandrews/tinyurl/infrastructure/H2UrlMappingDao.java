@@ -15,10 +15,17 @@ public class H2UrlMappingDao implements UrlMappingDao {
 
   @Transactional
   @Override
-  public Integer create(UrlMapping urlMapping) {
+  public UrlMapping create(UrlMapping urlMapping) {
     entityManager.persist(urlMapping);
     entityManager.flush();
-    return urlMapping.getId();
+    return urlMapping;
+  }
+
+  @Transactional
+  @Override
+  public void update(UrlMapping urlMapping) {
+    entityManager.merge(urlMapping);
+    entityManager.flush();
   }
 
   @Override
