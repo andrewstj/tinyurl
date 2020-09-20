@@ -1,6 +1,9 @@
 package com.tjandrews.tinyurl.presentation;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import com.tjandrews.tinyurl.business.UrlMappingService;
 import com.tjandrews.tinyurl.business.models.UrlMappingRequest;
@@ -26,9 +29,11 @@ public class UrlMappingController {
   private final UrlMappingService urlMappingService;
 
   @PostMapping(path = "/urlMapping")
-  public UrlMappingResponse createMappingForUrl(@RequestBody UrlMappingRequest request) {
-    // TODO: Add validator for url string
-    // https://www.geeksforgeeks.org/check-if-url-is-valid-or-not-in-java/#:~:text=url%20class%20to%20validate%20a,Else%20we%20return%20false.
+  public UrlMappingResponse createMappingForUrl(@RequestBody UrlMappingRequest request)
+      throws MalformedURLException, URISyntaxException {
+    checkValidUrl(request.getUrl());
+    // throw new MalformedURLException("URL is malformed: " + request.getUrl());
+    // }
     UrlMapping urlMapping = urlMappingService.createUrlMapping(request);
     String encodedUrl = urlMappingService.getEncodedUrl(urlMapping);
     return new UrlMappingResponse(request.getUrl(), encodedUrl);
@@ -46,6 +51,10 @@ public class UrlMappingController {
       headers.setLocation(URI.create(redirectUrl));
       return new ResponseEntity<>(headers, HttpStatus.TEMPORARY_REDIRECT);
     }).orElseThrow(() -> new EncodedPathNotFoundException(encodedPath));
+  }
+
+  private void checkValidUrl(String url) throws MalformedURLException, URISyntaxException {
+    new URL(url).toURI();
   }
 
 }
