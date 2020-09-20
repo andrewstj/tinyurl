@@ -2,8 +2,6 @@ package com.tjandrews.tinyurl.presentation;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import com.tjandrews.tinyurl.business.UrlMappingService;
 import com.tjandrews.tinyurl.business.models.UrlMappingRequest;
