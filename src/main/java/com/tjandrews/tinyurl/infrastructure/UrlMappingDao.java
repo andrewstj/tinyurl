@@ -1,12 +1,14 @@
 package com.tjandrews.tinyurl.infrastructure;
 
+import java.util.Optional;
+
 import com.tjandrews.tinyurl.infrastructure.models.UrlMapping;
 
 public interface UrlMappingDao {
   
   UrlMapping create(UrlMapping urlMapping);
   void update(UrlMapping urlMapping);
-  UrlMapping getById(Integer id);
-  UrlMapping getByEncodedValue(String encodedValue);
+  Optional<UrlMapping> getById(Integer id);
+  Optional<UrlMapping> getByEncodedValue(String encodedValue);
   
 }
