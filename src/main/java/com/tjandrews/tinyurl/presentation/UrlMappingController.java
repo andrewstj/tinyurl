@@ -30,10 +30,10 @@ public class UrlMappingController {
 
   @PostMapping(path = "/urlMapping")
   public UrlMappingResponse createMappingForUrl(@RequestBody UrlMappingRequest request)
-      throws MalformedURLException, URISyntaxException {
-    checkValidUrl(request.getUrl());
-    // throw new MalformedURLException("URL is malformed: " + request.getUrl());
-    // }
+      throws MalformedURLException {
+    if (!UrlMappingService.isValidUrl(request.getUrl())) {
+      throw new MalformedURLException("Invalid URL" + request.getUrl());
+    }
     UrlMapping urlMapping = urlMappingService.createUrlMapping(request);
     String encodedUrl = urlMappingService.getEncodedUrl(urlMapping);
     return new UrlMappingResponse(request.getUrl(), encodedUrl);
@@ -51,10 +51,6 @@ public class UrlMappingController {
       headers.setLocation(URI.create(redirectUrl));
       return new ResponseEntity<>(headers, HttpStatus.TEMPORARY_REDIRECT);
     }).orElseThrow(() -> new EncodedPathNotFoundException(encodedPath));
-  }
-
-  private void checkValidUrl(String url) throws MalformedURLException, URISyntaxException {
-    new URL(url).toURI();
   }
 
 }

@@ -1,5 +1,8 @@
 package com.tjandrews.tinyurl.business;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Optional;
 
 import com.tjandrews.tinyurl.business.models.UrlMappingRequest;
@@ -14,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UrlMappingService {
-  // TODO: Make this an external config property
-  private static final String baseUrl = "http://localhost:8080";
+  // TODO: Make this an external config property (when productionalizing)
+  public static final String baseUrl = "http://localhost:8080";
   public static final String pathPrefix = "/r/";
 
   @Autowired
@@ -23,6 +26,15 @@ public class UrlMappingService {
 
   public String getEncodedUrl(UrlMapping urlMapping) {
     return baseUrl + pathPrefix + urlMapping.getEncodedValue();
+  }
+
+  public static boolean isValidUrl(String url) {
+    try {
+      new URL(url).toURI();
+    } catch (MalformedURLException | URISyntaxException e) {
+      return false;
+    }
+    return true;
   }
 
   public UrlMapping createUrlMapping(UrlMappingRequest mappingRequest) {
@@ -41,5 +53,7 @@ public class UrlMappingService {
   public Optional<String> getUrlFromEncodedValue(String encodedValue) {
     return urlMappingDao.getByEncodedValue(encodedValue).map(UrlMapping::getUrl);
   }
+
+  
 
 }
