@@ -17,7 +17,7 @@ The approach I used was:
 - Utilize Spring Boot to be able to quickly bootstrap a Java application
 - Use H2 in memory database to get a quick Relational DB as persistent store
 - Use JPA / Hibernate so when switching to production database we don't have to switch code
-- For the [URLEncoder](src/main/java/com/tjandrews/tinyurl/business/UrlEncoder.java), allow for encoding / decoding Integer to String
+- For the [URLEncoder](src/main/java/com/tjandrews/tinyurl/business/UrlEncoder.java), allow for encoding / decoding Integer ID <-> String URL Path
 
 The main code prinicples followed here are:
 - Layered architecture (gui, presentation, business, infrastructure)
@@ -27,6 +27,7 @@ The main code prinicples followed here are:
 
 ### Caveats
 - The URL it redirects to is currently hardcoded to path `/r/{encodedPath}` (r is short for redirect), because using base path would then override ability to have other endpoints, such as `POST /urlMapping`
+  - A fix to that would be to have a different URL for creating and for redirecting 
 - Used Integer instead of Long for the ID as it can hold up to ~2.15 billion urls, if we need more:
   - We could create more tables that each belong to a base path (`/a/`, `/b/`, etc)
   - We could utilize a compound key on the table where it's the Id and the base path (`a1`, `b1`, etc)
